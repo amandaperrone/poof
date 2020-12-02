@@ -17,44 +17,44 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import poo1.af.model.Cliente;
-import poo1.af.service.ClienteService;
+import poo1.af.model.Veiculo;
+import poo1.af.service.VeiculoService;
 
 @RestController
-@RequestMapping("/clientes")
-public class ClienteController {
+@RequestMapping("/veiculos")
+public class VeiculoController {
     
     @Autowired
-    private ClienteService clienteService;
+    private VeiculoService veiculoService;
 
     @GetMapping()
-    public List<Cliente> getClientes(){
-        return clienteService.getAllClientes();
+    public List<Veiculo> getVeiculos(){
+        return veiculoService.getAllVeiculos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getCliente(@PathVariable int id){
-        Cliente cliente = clienteService.getClienteByID(id);
-        return ResponseEntity.ok(cliente);
+    public ResponseEntity<Veiculo> getVeiculo (@PathVariable int id){
+        Veiculo veiculo = veiculoService.getVeiculoByID(id);
+        return ResponseEntity.ok(veiculo);
     }
 
     @PostMapping()
-    public ResponseEntity<Void> createCliente(@RequestBody Cliente cliente, HttpServletRequest request, UriComponentsBuilder builder) {
-        cliente = clienteService.createCliente(cliente);
-        UriComponents uri = builder.path(request.getRequestURI() + "/" + cliente.getIdC()).build();
+    public ResponseEntity<Void> createVeiculo(@RequestBody Veiculo veiculo, HttpServletRequest request, UriComponentsBuilder builder) {
+        veiculo = veiculoService.createVeiculo(veiculo);
+        UriComponents uri = builder.path(request.getRequestURI() + "/" + veiculo.getIdV()).build();
         return ResponseEntity.created(uri.toUri()).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCliente(@PathVariable int id){
-        clienteService.removeClienteByID(id);
+    public ResponseEntity<Void> deleteVeiculo(@PathVariable int id){
+        veiculoService.removeVeiculoByID(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable int id, @RequestBody Cliente cliente){
-        cliente.setIdC(id);
-        cliente = clienteService.updateCliente(cliente);
-        return ResponseEntity.ok(cliente);
+    public ResponseEntity<Veiculo> updateVeiculo (@PathVariable int id, @RequestBody Veiculo veiculo){
+        veiculo.setIdV(id);
+        veiculo = veiculoService.updateVeiculo(veiculo);
+        return ResponseEntity.ok(veiculo);
     }
 }
