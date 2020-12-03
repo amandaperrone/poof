@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import poo1.af.dto.ClienteDTO;
 import poo1.af.model.Cliente;
+import poo1.af.model.Reserva;
 import poo1.af.service.ClienteService;
+import poo1.af.service.ReservaService;
 
 @RestController
 @RequestMapping("/clientes")
@@ -26,6 +29,9 @@ public class ClienteController {
     
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private ReservaService reservaService;
 
     @GetMapping()
     public List<Cliente> getClientes(){
@@ -39,7 +45,8 @@ public class ClienteController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> createCliente(@RequestBody Cliente cliente, HttpServletRequest request, UriComponentsBuilder builder) {
+    public ResponseEntity<Void> createCliente(@RequestBody ClienteDTO clienteDTO, HttpServletRequest request, UriComponentsBuilder builder) {
+        Cliente cliente = clienteService.fromDTO(clienteDTO);
         cliente = clienteService.createCliente(cliente);
         UriComponents uri = builder.path(request.getRequestURI() + "/" + cliente.getIdC()).build();
         return ResponseEntity.created(uri.toUri()).build();
@@ -57,4 +64,10 @@ public class ClienteController {
         cliente = clienteService.updateCliente(cliente);
         return ResponseEntity.ok(cliente);
     }
+
+    @GetMapping("/{id}/reservas")
+    public List<Reserva> getReservasPorCliente (@PathVariable int id) {
+        return clienteService.getReservasPorCliente(clienteService.getClienteByID(id));
+    }
+
 }

@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import poo1.af.dto.ClienteDTO;
 import poo1.af.model.Cliente;
+import poo1.af.model.Reserva;
 import poo1.af.repository.ClienteRepository;
 
 @Service
@@ -16,6 +18,14 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    public Cliente fromDTO(ClienteDTO dto){
+        Cliente cliente = new Cliente();
+        cliente.setEndereco(dto.getEndereco());
+        cliente.setNome(dto.getNome());
+
+        return cliente;
+    }
+    
     public List<Cliente> getAllClientes() {
         return clienteRepository.getAllClientes();
     }
@@ -36,5 +46,9 @@ public class ClienteService {
     public Cliente updateCliente(Cliente cliente){
         getClienteByID(cliente.getIdC());
         return clienteRepository.updateCliente(cliente);
+    }
+
+    public List<Reserva> getReservasPorCliente(Cliente cliente) {
+        return clienteRepository.getReservas(cliente);
     }
 }

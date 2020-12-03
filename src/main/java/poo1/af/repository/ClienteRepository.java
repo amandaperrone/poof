@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
 import poo1.af.model.Cliente;
+import poo1.af.model.Reserva;
 
 @Component
 public class ClienteRepository {
@@ -67,5 +68,10 @@ public class ClienteRepository {
 
     public void removeCliente(Cliente cliente){
         clientes.remove(cliente);
+    }
+
+
+    public List<Reserva> getReservas(Cliente cliente) {
+        return cliente.getReservas();
     }
 }
